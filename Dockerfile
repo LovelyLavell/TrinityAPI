@@ -10,15 +10,23 @@ RUN /deploy/Scripts/Bash/Startup.sh
 
 #commands
 #Download sql server
+#also just remember to move the password and username out of any solution files
 FROM mcr.microsoft.com/mssql/server:2017-latest
 ENV ACCEPT_EULA=Y
-ENV SA_PASSWORD=abcDEF123
+ENV SA_PASSWORD=pass
 ENV MSSQL_PID=Developer
 ENV MSSQL_TCP_PORT=1433 
 WORKDIR /src 
 COPY filldata.sql ./filldata.sql 
-RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started" &&  /opt/mssql-tools/bin/sqlcmd -S127.0.0.1 -Usa -PabcDEF123 -i filldata.sql
+RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started" &&  /opt/mssql-tools/bin/sqlcmd -S127.0.0.1 -Usa -Ppass -i filldata.sql
 
+FROM mcr.microsoft.com/mssql/server:2017-latest AS build
+WORKDIR /src
+COPY ["TrinityAPI.csproj", "."]
+RUN dotnet restore "./TrinityAPI.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "TrinityAPI.csproj" -c Release -o /app/build
 
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
