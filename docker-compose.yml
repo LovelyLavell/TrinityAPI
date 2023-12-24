@@ -1,13 +1,13 @@
 version: '3.4'
 services:
     trinityDB:
-        container_name: TrinityDB
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: DbContainer
+        image: mcr.microsoft.com/mssql/server:2022-latest
         ports:
         - 8002:1433
         environment:
+        - MSSQL_SA_PASSWORD=S74nkm4m1
         - ACCEPT-EULA=Y
-        - SA_PASSWORD=S74nkm4m1
     trinityapi:
         container_name: Trinity
         image: ${DOCKER_REGISTRY-}trinityapi
@@ -17,7 +17,7 @@ services:
         ports:
         - 8001:80
         depends_on:
-        - trinityDB
+        - DbContainer
         environment:
         - DB_HOST=trinityDB
         - DB_NAME=trinityDB
