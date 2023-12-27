@@ -1,13 +1,17 @@
 version: '3.4'
+networks:
+    trinityNet:
 services:
     trinityDB:
-        container_name: DbContainer
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        container_name: TrinityDB
+        image: mcr.microsoft.com/mssql/server:2019-latest
         ports:
         - 8002:1433
         environment:
         - MSSQL_SA_PASSWORD=S74nkm4m1
-        - ACCEPT-EULA=Y
+        - ACCEPT_EULA=Y
+        networks:
+        - trinityNet
     trinityapi:
         container_name: Trinity
         image: ${DOCKER_REGISTRY-}trinityapi
@@ -16,11 +20,11 @@ services:
             dockerfile: Dockerfile
         ports:
         - 8001:80
-        depends_on:
-        - DbContainer
         environment:
         - DB_HOST=trinityDB
-        - DB_NAME=trinityDB
+        - DB_NAME=Trinity
         - DB_SA_PASSWORD=S74nkm4m1
+        networks:
+        - trinityNet
 
 
