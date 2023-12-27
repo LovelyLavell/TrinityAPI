@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrinityAPI", "TrinityAPI.csproj", "{6EF5BA17-6B21-4279-842E-20C0FD750563}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{511A68C0-7260-4E78-97B3-DCF10B5476B4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6EF5BA17-6B21-4279-842E-20C0FD750563} = {6EF5BA17-6B21-4279-842E-20C0FD750563}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
