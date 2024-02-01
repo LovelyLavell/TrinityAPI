@@ -20,7 +20,7 @@ namespace TrinityAPI
             var pass = "S74nkm4m1";
             string[] connectionStrings = new string[]
             {
-                "Data Source=" + host + ";Initial Catalog=" + name + ";User ID=sa;Password=" + pass + ";trusted_connection=true;TrustServerCertificate=True;encrypt=false"
+                "Data Source=" + host + ";Initial Catalog=" + name + ";User ID=sa;Password=" + pass + ";trusted_connection=true;TrustServerCertificate=true;encrypt=false"
             };
             ///Add the services to the API
             ///Game
