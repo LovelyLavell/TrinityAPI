@@ -1,7 +1,22 @@
-version: '3.4'
-networks:
-    trinityNet:
 services:
+    trinityapi:
+        container_name: Trinity
+        image: ${DOCKER_REGISTRY-}trinityapi
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+        - 80:80
+        depends_on:
+        - DB
+        environment:
+        - DB_HOST=DB
+        - DB_NAME=Game
+        - DB_SA_PASSWORD=S74nkm4m1
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:80
+        networks:
+        - trinityNet
     DB:
         container_name: TrinityDB
         image: mcr.microsoft.com/mssql/server:2019-latest
@@ -12,20 +27,5 @@ services:
         - ACCEPT_EULA=Y
         networks:
         - trinityNet
-    trinityapi:
-        container_name: Trinity
-        image: ${DOCKER_REGISTRY-}trinityapi
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-        - 80:80
-        environment:
-        - DB_HOST=DB
-        - DB_NAME=TrinityDB
-        - DB_SA_PASSWORD=S74nkm4m1
-        - ASPCORE_URLS=http://+80
-        networks:
-        - trinityNet
-
-
+networks:
+    trinityNet: 

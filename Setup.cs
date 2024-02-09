@@ -11,18 +11,16 @@ namespace TrinityAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             var host = "DB";
-            var name = "Trinity";
+            var name = "Game";
             var pass = "S74nkm4m1";
             string[] connectionStrings = new string[]
             {
-                "Data Source=" + host + ";Initial Catalog=" + name + ";User ID=sa;Password=" + pass + ";trusted_connection=true;TrustServerCertificate=true;encrypt=false"
+                "Data Source=" + host + ";Initial Catalog=" + name + ";User ID=sa;Password=" + pass + ";trusted_connection=true;integrated security=false;TrustServerCertificate=true;encrypt=false"
             };
-            ///Add the services to the API
+            // Add services to the container.
+            builder.Services.AddControllers();
             ///Game
             builder.Services.AddDbContext<ContextGame>(options => options.UseSqlServer(connectionStrings[0]), optionsLifetime: ServiceLifetime.Singleton);
             builder.Services.AddSingleton(new ServiceConfiguration(connectionStrings));
@@ -39,8 +37,12 @@ namespace TrinityAPI
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
 
+                using var scope = app.Services.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<ContextGame>();
+                context.Database.EnsureCreated();
+            }
+             
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
