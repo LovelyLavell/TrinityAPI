@@ -1,16 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using TrinityAPI.Models.Game;
 
-namespace TrinityAPI.Models.Game
+namespace TrinityAPI.DTO.Game
 {
-    [Table("Item")]
-    public class Item
+    public class DTOItem
     {
-        /// <summary>
-        /// SQL ID
-        /// </summary>
-        [Key]
-        public int ID { get; set; }
         /// <summary>
         /// String ID that will remain constant despite the SQL ID
         /// </summary>
