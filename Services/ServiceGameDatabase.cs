@@ -28,14 +28,21 @@ namespace TrinityAPI.Services
             db.SaveChanges();
             return baseItem;
         }
-        public Item GetItem(DTORequest request)
+        public IEnumerable<Item> GetItem(DTORequest request)
         {
             ContextGame db = factory.CreateDbContext();
-            return db.Items.Where(i => i.ID == request.ID || i.Name.Contains(request.Label) || i.Description.Contains(request.description)).FirstOrDefault();
+            if (db.Items is null)
+                return new List<Item>();
+            return db.Items.Where(
+            i => i.ID == request.ID || 
+            (!string.IsNullOrEmpty(i.Name) && !string.IsNullOrEmpty(request.Label) && i.Name.Contains(request.Label) || 
+            (!string.IsNullOrEmpty(i.Description) && !string.IsNullOrEmpty(request.description) && i.Description.Contains(request.description))));
         }
         public IEnumerable<Item> GetItems()
         {
             ContextGame db = factory.CreateDbContext();
+            if (db.Items is null)
+                throw new Exception("Database issue Detected");
             return db.Items;
         }
     }

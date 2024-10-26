@@ -20,9 +20,12 @@ namespace TrinityAPI.Controllers
             gameDatabase.AddItem(item);
         }
         [HttpGet(Name = "GetItems")]
-        public Item GetItem(DTORequest request)
+        public IEnumerable<Item> GetItem(int? i, string? name, string? desc)
         {
-            return gameDatabase.GetItem(request);
+            return gameDatabase.GetItem(new DTORequest() { 
+            ID = i ?? 0,
+            Label = name,
+            description = desc});
         }
         [HttpGet(Name = "GetAllItems")]
         public IEnumerable<Item> GetItems()
